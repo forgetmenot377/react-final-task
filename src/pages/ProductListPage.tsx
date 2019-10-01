@@ -1,9 +1,14 @@
 import React from 'react';
 import { withRouter } from "react-router";
+import FiltersComponent from '../components/Filters';
+import ProductListComponent from "../components/ProductList";
 
 const ProductListPage = (props: any) => {
     return (
-        <div className="productListPage"></div>
+        <React.Fragment>
+            <FiltersComponent />
+            <ProductListComponent />
+        </React.Fragment>
     )
 };
 

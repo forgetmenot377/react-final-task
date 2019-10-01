@@ -10,7 +10,7 @@ export const generateHttpHandler = (handler: any, onSuccess = successHandler, on
     return handler.then(onSuccess).catch(onError)};
 
 export const HttpService = {
-    get(url: string, config: any) {
+    get(url: string, config: any = {}) {
         return generateHttpHandler(axios.get(url, config));
     },
     post(url: string, data: any, config: any = null) {
@@ -27,4 +27,5 @@ export const HttpService = {
 export default {
     logIn: (data: any) => HttpService.post(`${BASE_URL}/login`, data),
     logOut: (data: any, config: any) => HttpService.post(`${BASE_URL}/logout`, data, config),
+    getProducts: () => HttpService.get(`${BASE_URL}/products`),
 }
