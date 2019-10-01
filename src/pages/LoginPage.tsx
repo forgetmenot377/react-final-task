@@ -1,14 +1,18 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import Login from "../components/Login";
 import httpService from "../services/http.service";
 import { withRouter } from "react-router";
+import { History } from 'history';
 
- class LoginPage extends Component<any> {
-    state = {
-        error: ''
-    };
+export type LoginProps = {
+    history: History
+};
 
-    logIn = (event: any): void => {
+const LoginPage: React.FC<LoginProps> = React.memo(({ history }) => {
+    const [errorMsg, setErrorMsg] = useState(
+        ''
+    );
+    const logIn = (event: any): void => {
         event.preventDefault();
         const login: string = event.target.elements.login.value;
         const password: string = event.target.elements.password.value;
@@ -19,25 +23,23 @@ import { withRouter } from "react-router";
         }).then((response: any) => {
             localStorage.setItem('session-token', response.headers['session-token']);
             localStorage.setItem('login', login);
-            this.setState({error: ''});
-            this.props.history.push("/");
+            setErrorMsg('');
+            history.push("/");
         })
             .catch((error: any) => {
-                this.setState({error: 'You entered wrong login or password'});
+                setErrorMsg('You entered wrong login or password');
                 console.log(error);
             });
     };
 
-    render() {
-        return (
-            <div className="loginPage">
-                <Login
-                    logIn={this.logIn}
-                    errorMsg={this.state.error}
-                />
-            </div>
-        )
-    }
-}
+    return (
+        <div className="loginPage">
+            <Login
+                logIn={logIn}
+                errorMsg={errorMsg}
+            />
+        </div>
+    )
+});
 
 export default withRouter(LoginPage);
